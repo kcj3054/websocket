@@ -8,4 +8,16 @@
   ws.onmessage = function(event) {
     console.log(event.data);
   };
+
+  // 통신 중 에러가 발생할 경우
+  ws.onerror = function(event) {
+      console.error(event.error);
+  };
+
+  // server 또는 client 중 어느 하나가 통신을 끊는 경우
+  ws.onclose = function(event) {
+      console.warn(event.code);
+  };
+
+
 </script>
