@@ -35,12 +35,13 @@ public class WebSocketServer {
         sessions.add(session);
         log.info("onOpen: " + sessions.size());
         sendMessage(session, "Hi!");
-        broadcast(session, "Halo! Others");
+//        broadcast(session, "Halo! Others");
     }
 
     @OnMessage
     public void onMessage(Session session, String message) {
         log.info(message);
+        broadcast(session, message);
     }
 
     // 통신 중 에러가 발생할 경우
