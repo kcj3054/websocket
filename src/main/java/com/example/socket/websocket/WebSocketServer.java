@@ -23,11 +23,19 @@ public class WebSocketServer {
         }
     }
 
+    private static void broadcast(Session _session, String message) {
+        for (Session session : sessions) {
+            if (session == _session) continue;
+            sendMessage(session, message);
+        }
+    }
+
     @OnOpen
     public void onOpen(Session session) {
         sessions.add(session);
         log.info("onOpen: " + sessions.size());
         sendMessage(session, "Hi!");
+        broadcast(session, "Halo! Others");
     }
 
     @OnMessage
