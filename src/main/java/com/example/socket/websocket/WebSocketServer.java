@@ -1,6 +1,9 @@
 package com.example.socket.websocket;
 
+import com.example.socket.CustomSpringConfigurator;
+import com.example.socket.service.WebSocketService;
 import lombok.extern.java.Log;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
@@ -11,7 +14,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
 
 @Log
 @Component
-@ServerEndpoint(value = "/websocket")
+@ServerEndpoint(value = "/websocket", configurator = CustomSpringConfigurator.class)
 public class WebSocketServer {
     private static Set<Session> sessions = new CopyOnWriteArraySet<>();
 
@@ -23,6 +26,9 @@ public class WebSocketServer {
         }
     }
 
+    @Autowired
+    WebSocketService webSocketService;
+
     private static void broadcast(Session _session, String message) {
         for (Session session : sessions) {
             if (session == _session) continue;
@@ -32,6 +38,7 @@ public class WebSocketServer {
 
     @OnOpen
     public void onOpen(Session session) {
+        webSocketService.a();
         sessions.add(session);
         log.info("onOpen: " + sessions.size());
         sendMessage(session, "Hi!");
