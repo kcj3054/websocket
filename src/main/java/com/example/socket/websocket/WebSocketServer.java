@@ -16,6 +16,8 @@ import java.util.concurrent.CopyOnWriteArraySet;
 @Component
 @ServerEndpoint(value = "/websocket", configurator = CustomSpringConfigurator.class)
 public class WebSocketServer {
+
+//    한 페이지당 한 세션.
     private static Set<Session> sessions = new CopyOnWriteArraySet<>();
 
     private static void sendMessage(Session session, String message) {
@@ -29,6 +31,7 @@ public class WebSocketServer {
     @Autowired
     WebSocketService webSocketService;
 
+//    나 제외하고 다른 사람들에게 메시지를 보낸다
     private static void broadcast(Session _session, String message) {
         for (Session session : sessions) {
             if (session == _session) continue;
@@ -36,6 +39,7 @@ public class WebSocketServer {
         }
     }
 
+//    클라이언트의 요청
     @OnOpen
     public void onOpen(Session session) {
         webSocketService.a();
